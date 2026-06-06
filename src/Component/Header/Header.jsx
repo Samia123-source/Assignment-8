@@ -8,6 +8,8 @@ const Header = () => {
      <li><NavLink to='/pagestoread'>Pages to Read</NavLink></li>
      <li><NavLink to='/academic'>Academic</NavLink></li>
      <li><NavLink to='/professional'>Professional</NavLink></li>
+     <li><NavLink to='/wishlist'>WishList</NavLink></li>
+
   
 
       

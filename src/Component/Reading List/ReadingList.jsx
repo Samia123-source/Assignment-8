@@ -12,7 +12,7 @@ const ReadingList = () => {
     const storedReadingList = getStoredReadingList();
     if (books.length > 0) {
         const listOfReading = storedReadingList
-            .map(id => books.find(book => book.Id === parseInt(id))) 
+            .map(id => books.find(book => book.Id === parseInt(Id))) 
             .filter(Boolean); 
         setReadingList(listOfReading);
     }
