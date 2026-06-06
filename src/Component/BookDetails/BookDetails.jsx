@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLoaderData, useParams } from 'react-router-dom';
-import { saveReadingList } from '../Utility/localstorage';
+import { saveReadingList, saveWishList } from '../Utility/localstorage';
 import { ToastContainer, toast } from 'react-toastify';
 
 const BookDetails = () => {
@@ -13,42 +13,50 @@ const BookDetails = () => {
 
     const handleReadingList = () =>{
         saveReadingList(IdInt);
-        toast('You have read the book');
+        toast('You have completed reading the book');
+        
+    }
+
+     const handleWishList = () =>{
+        saveWishList(IdInt);
+        toast('You have successfully saved this book to your wishtlist');
         
     }
     return (
-        <div className='bg-white text-black mx-20 mt-6'>
+        <div className='bg-white h-screen text-black mx-20 mt-6'>
            <div className='flex max-w gap-6'>
-               <div>
+               <div className='w-1/2'>
                 <img src={book.Book_Img} alt="" />
             </div>
-            <div>
+            <div className='w-1/2'>
                <p className='text-3xl'> {book.Book_Name}</p>
                 <p>By:{book.By}</p>
                 <hr />
                 <p>{book.Genre}</p>
                 <hr />
-                <p>{book.Review}</p>
-                  <hr />
-                   <p>Tag: {book.Tags}</p>
+                <p className='mb-4'>{book.Review}</p>
+                 
+                   <p className='mb-4 mt-4'>Tag: {book.Tags}</p>
                    <hr />
-                   <p>Number of Pages: {book.Number_Of_Pages}</p>
+                   <div className='mt-4'>
+                    <p>Number of Pages: {book.Number_Of_Pages}</p>
                    <p>Publisher:{book.Publisher}</p>
                    <p>Year of Publishing:{book.Year_Of_Publishing}</p>
                    <p>Rating:{book.Rating}</p>
-                   <div>
-                      <button onClick={handleReadingList} className="btn btn-primary w-full">Read</button>
+                   </div>
+                   <div className='flex gap-4 mt-4'>
+                      <button onClick={handleReadingList} className="btn btn-primary p-4">Read</button>
+                      <button onClick={handleWishList} className="btn btn-primary p-4 text-white bg-[#50B1C9]">Wishlist</button>
                    </div>
             
             </div>
            </div>
          
          <div>
-
+<ToastContainer/>
          </div>
                 
 
-              <ToastContainer />   
             </div>
       
     );

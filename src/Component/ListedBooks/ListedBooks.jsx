@@ -1,9 +1,14 @@
+ 
+ 
+
 
 
 const ListedBooks = () => {
-    return (
-        <div>
-            <h2>List of the Books</h2>
+  
+ 
+ return (
+        <div className="bg-gray-200 text-5xl text-black text-center rounded-xl ">
+            <h2>Books</h2>
         </div>
     );
 };
