@@ -8,11 +8,9 @@ import './index.css'
 } from "react-router-dom";
 import Root from './Component/Root/Root';
 import Home from './Component/Home/Home';
-import ListedBooks from './Component/ListedBooks/ListedBooks';
 import PagesToRead from './Component/PagesToRead/PagesToRead';
 import ErrorPage from './Component/ErrorPage/ErrorPage';
 import BookDetails from './Component/BookDetails/BookDetails';
-import ReadingList from './Component/Reading List/ReadingList';
 import WishList from './Component/WishList/WishList';
 
 
@@ -38,15 +36,12 @@ const router = createBrowserRouter([
         element: <BookDetails></BookDetails>,
         loader: ()=> fetch('books.json')
       },
-      {
-        path:'/readlist',
-        element:<ReadingList></ReadingList>,
-        loader: () => fetch('books.json') 
-      },
  
        {
              path:'/wishlist',
-             element:<WishList></WishList>
+             element:<WishList></WishList>,
+             loader: () => fetch('books.json') 
+
        }
 
     ]

@@ -2,25 +2,29 @@ import React, { useState } from 'react';
 import { useLoaderData, useParams } from 'react-router-dom';
 import { saveReadingList, saveWishList } from '../Utility/localstorage';
 import { ToastContainer, toast } from 'react-toastify';
-
+import { getStoredReadingList,getStoredWishList } from '../Utility/localstorage';
 const BookDetails = () => {
 
     const books = useLoaderData();
     const { Id } = useParams();
     const IdInt = parseInt(Id);
     const book = books.find(book => book.Id === IdInt)
+     const [isRead,    setIsRead]    = useState(() => getStoredReadingList().includes(IdInt));
+    const [isWished,  setIsWished]  = useState(() => getStoredWishList().includes(IdInt));
+
     console.log(book);
 
-    const handleReadingList = () => {
+      const handleReadingList = () => {
         saveReadingList(IdInt);
+        setIsRead(true);
+        setIsWished(true); 
         toast('You have completed reading the book');
-
     }
 
     const handleWishList = () => {
         saveWishList(IdInt);
-        toast('You have successfully saved this book to your wishtlist');
-
+        setIsWished(true);
+        toast('You have successfully saved this book to your wishlist');
     }
     return (
         <div className='bg-white h-auto text-black mx-20 mt-6'>
@@ -87,9 +91,19 @@ const BookDetails = () => {
                             
                         </div>
                         </div>
-                    <div className='flex gap-4 mt-4'>
-                        <button onClick={handleReadingList} className="btn btn-primary p-4">Read</button>
-                        <button onClick={handleWishList} className="btn btn-primary p-4 text-white bg-[#50B1C9]">Wishlist</button>
+                     <div className='flex gap-4 mt-4'>
+                        <button
+                            onClick={handleReadingList}
+                            disabled={isRead}
+                            className="btn btn-primary p-4 disabled:opacity-50 disabled:cursor-not-allowed">
+                            {isRead ? 'Already Read' : 'Read'}
+                        </button>
+                        <button
+                            onClick={handleWishList}
+                            disabled={isWished}
+                            className="btn btn-primary p-4 text-white bg-[#50B1C9] disabled:opacity-50 disabled:cursor-not-allowed">
+                            {isWished ? 'Already Wishlisted' : 'Wishlist'}
+                        </button>
                     </div>
 
                 </div>
