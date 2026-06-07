@@ -24,7 +24,7 @@ const WishList = () => {
                 const book = books.find(book => book.Id === parseInt(id));
                 if (book) listOfReading.push(book);
             }
-            setReadingList(listOfReading);
+        setReadingList(listOfReading);
         }
     }, [books]);
 

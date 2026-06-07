@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
     BarChart,
     Bar,
@@ -8,53 +9,9 @@ import {
     Tooltip,
     ResponsiveContainer,
 } from 'recharts';
+import { getStoredReadingList } from '../Utility/localstorage';
 
 const colors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', 'red', 'pink', 'black'];
-
-const data = [
-    {
-        name: 'Page A',
-        uv: 4000,
-        pv: 2400,
-        amt: 2400,
-    },
-    {
-        name: 'Page B',
-        uv: 3000,
-        pv: 1398,
-        amt: 2210,
-    },
-    {
-        name: 'Page C',
-        uv: 2000,
-        pv: 9800,
-        amt: 2290,
-    },
-    {
-        name: 'Page D',
-        uv: 2780,
-        pv: 3908,
-        amt: 2000,
-    },
-    {
-        name: 'Page E',
-        uv: 1890,
-        pv: 4800,
-        amt: 2181,
-    },
-    {
-        name: 'Page F',
-        uv: 2390,
-        pv: 3800,
-        amt: 2500,
-    },
-    {
-        name: 'Page G',
-        uv: 3490,
-        pv: 4300,
-        amt: 2100,
-    },
-];
 
 const getPath = (x, y, width, height) => {
     return `M${x},${y + height}C${x + width / 3},${y + height} ${x + width / 2},${y + height / 3}
@@ -93,17 +50,46 @@ const CustomColorLabel = (props) => {
 };
 
 const PagesToRead = () => {
+    const [books, setBooks] = useState([]);
+const [readingList, setReadingList] = useState([]);
+    useEffect(() => {
+        fetch('books.json')
+            .then(res => res.json())
+            .then(data => {
+                const storedReadingList = getStoredReadingList();
+                const listOfReading = [];
+                for (const id of storedReadingList) {
+                    const book = data.find(book => book.Id === parseInt(id));
+                    if (book) listOfReading.push(book);
+                }
+                setReadingList(listOfReading);
+            });
+    }, []);
+
+    const chartData = readingList.map(book => ({
+        name: book.Book_Name,
+        pages: book.Number_Of_Pages,
+    }));
+
     return (
         <ResponsiveContainer width="100%" height={400}>
             <BarChart
-                data={data}
-                margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
+                data={chartData}
+                margin={{ top: 20, right: 20, left: 0, bottom: 80 }}
             >
                 <CartesianGrid strokeDasharray="3 3" />
-                <Tooltip cursor={{ fillOpacity: 0.3 }} />
-                <XAxis dataKey="name" />
+                <Tooltip
+                    formatter={(value) => [`${value} pages`, 'Pages']}
+                />
+                <XAxis
+                    dataKey="name"
+                    angle={-35}
+                    textAnchor="end"
+                    interval={0}
+                    tick={{ fontSize: 11 }}
+                />
                 <YAxis width={50} />
-                <Bar dataKey="uv" shape={<TriangleBar />}>
+                <Bar dataKey="pages" shape={<TriangleBar />}>
                     <LabelList content={<CustomColorLabel />} position="top" />
                 </Bar>
             </BarChart>
