@@ -5,13 +5,12 @@ import {
     YAxis,
     CartesianGrid,
     LabelList,
-    Label,
     Tooltip,
+    ResponsiveContainer,
 } from 'recharts';
 
 const colors = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', 'red', 'pink', 'black'];
 
-// #region Sample data
 const data = [
     {
         name: 'Page A',
@@ -57,7 +56,6 @@ const data = [
     },
 ];
 
-// #endregion
 const getPath = (x, y, width, height) => {
     return `M${x},${y + height}C${x + width / 3},${y + height} ${x + width / 2},${y + height / 3}
   ${x + width / 2}, ${y}
@@ -67,45 +65,49 @@ const getPath = (x, y, width, height) => {
 
 const TriangleBar = (props) => {
     const { x, y, width, height, index } = props;
-
     const color = colors[index % colors.length];
-
     return (
         <path
-            strokeWidth={props.isActive ? 5 : 0}
             d={getPath(Number(x), Number(y), Number(width), Number(height))}
             stroke={color}
             fill={color}
-            style={{
-                transition: 'stroke-width 0.3s ease-out',
-            }}
         />
     );
 };
 
-
+const CustomColorLabel = (props) => {
+    const { x, y, width, value, index } = props;
+    const color = colors[index % colors.length];
+    return (
+        <text
+            x={x + width / 2}
+            y={y - 6}
+            fill={color}
+            textAnchor="middle"
+            fontSize={12}
+            fontWeight="bold"
+        >
+            {value}
+        </text>
+    );
+};
 
 const PagesToRead = () => {
     return (
-        <BarChart
-            style={{ width: '100%', maxWidth: '700px', maxHeight: '70vh', aspectRatio: 1.618 }}
-            responsive
-            data={data}
-            margin={{
-                top: 20,
-                right: 0,
-                left: 0,
-                bottom: 5,
-            }}
-        >
-            <CartesianGrid strokeDasharray="3 3" />
-            <Tooltip cursor={{ fillOpacity: 0.5 }} />
-            <XAxis dataKey="name" />
-            <YAxis width="auto" />
-            <Bar dataKey="uv" fill="#8884d8" shape={TriangleBar} activeBar>
-                <LabelList content={CustomColorLabel} position="top" />
-            </Bar>
-        </BarChart>
+        <ResponsiveContainer width="100%" height={400}>
+            <BarChart
+                data={data}
+                margin={{ top: 20, right: 20, left: 0, bottom: 5 }}
+            >
+                <CartesianGrid strokeDasharray="3 3" />
+                <Tooltip cursor={{ fillOpacity: 0.3 }} />
+                <XAxis dataKey="name" />
+                <YAxis width={50} />
+                <Bar dataKey="uv" shape={<TriangleBar />}>
+                    <LabelList content={<CustomColorLabel />} position="top" />
+                </Bar>
+            </BarChart>
+        </ResponsiveContainer>
     );
 };
 
