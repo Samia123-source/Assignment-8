@@ -13,6 +13,7 @@ import ErrorPage from './Component/ErrorPage/ErrorPage';
 import BookDetails from './Component/BookDetails/BookDetails';
 
 import ListedBooks from './Component/ListedBooks/ListedBooks';
+import { BarChart } from 'recharts';
 
 
 
@@ -43,7 +44,11 @@ const router = createBrowserRouter([
              element:<ListedBooks></ListedBooks>,
              loader: () => fetch('books.json') 
 
-       }
+       },
+      //  {
+      //   path:'/barchart',
+      //   element: <BarChart></BarChart>
+      //  }
 
     ]
   
